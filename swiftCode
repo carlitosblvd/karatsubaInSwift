@@ -1,0 +1,73 @@
+//: Playground - noun: a place where people can play
+
+import UIKit
+
+
+// Karatsuba Multiplication in swift
+
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+func ^^ (radix: Int, power: Int) -> Int {
+    return Int(pow(Double(radix), Double(power)))
+}
+
+func karatsuba(number1:Int,number2:Int)-> Int {
+    var result : Int
+    
+    if number1 < 10 && number2 < 10 {
+        result = number1 * number2
+        return result
+    }else {
+    
+
+// number1*number2 = (pow(10,n) * a * c) + (pow(10,n/2) * (a*d + b*c) ) + b * d
+// n = max digit numbers of number1 ans number2
+
+let stringNumber1 = String(number1)
+let nstringNumber1 = stringNumber1.characters.count
+
+let stringNumber2 = String(number2)
+let nstringNumber2 = stringNumber2.characters.count
+        
+// max number of digits of num1 and num2
+
+let nmax : Int = max(nstringNumber1, nstringNumber2)
+var n = 0
+if nmax % 2 == 0 {
+    n = nmax
+}else {
+    n = nmax + 1
+}
+
+let nBy2 = n/2
+
+// value of a , b , c , d
+
+let a = number1 / (10^^nBy2)
+
+
+let b = number1 % (10^^nBy2)
+
+
+let c = number2 / (10^^nBy2)
+
+
+let d = number2 % (10^^nBy2)
+
+
+
+// values of a*c , b*d and a*d+b*c
+
+let ac = karatsuba(number1: a, number2: c)
+
+let bd = karatsuba(number1: b, number2: d)
+
+let adbc = (a*d)+(b*c)
+
+// solution of Karatsuba Multiplication
+
+ result = (10^^n)*(ac) + (10^^nBy2)*(adbc) + (bd)
+
+return result
+    }
+}
